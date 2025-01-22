@@ -1,5 +1,5 @@
 # SafeDiffuser
-Safe Planning for Diffusion Probabilistic Models
+Implementation of our ICLR 2025 paper - SafeDiffuser: Safe Planning for Diffusion Probabilistic Models （code to be uploaded soon）
 
 
 ![pipeline](imgs/safediffuser.png) 
