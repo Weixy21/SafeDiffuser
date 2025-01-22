@@ -13,13 +13,19 @@ pip install -e .
 pip install qpth cvxpy cvxopt
 ```
 
-# Downloading weights
+# Switch between different experiments
+```
+git switch maze2d/locomotion/kuka
+```
+
+# Use pre-trained models
+## Downloading weights
 Download pretrained diffusion models and value functions (from diffuser) with:
 ```
 ./scripts/download_pretrained.sh
 ```
 
-# Planning
+## Planning
 To plan with guided sampling, run:
 ```
 python scripts/plan_guided.py --dataset halfcheetah-medium-expert-v2 --logbase logs/pretrained
