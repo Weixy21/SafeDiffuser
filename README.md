@@ -62,4 +62,4 @@ If you find this helpful, please cite our work:
 ```
 
 # Acknowledgements
-The diffusion model implementation and organization are based on Michael Janner's difuser repo: https://github.com/jannerm/diffuser
+The diffusion model implementation and organization are based on Michael Janner's diffuser repo: https://github.com/jannerm/diffuser
