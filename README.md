@@ -26,9 +26,13 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/nvidia-515
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/wei/.mujoco/mujoco200/bin
 ```
 2. Choose diffusers/CG/Truncate/different safediffusers (maze2d case)
+
 (1) Choose any one option betwee lines 1040 and 1095 of the file diffuser/models/diffusion.py
+
 (2) Choose any one option betwee lines 300 and 358 of the file diffuser/utils/rendering.py   (for visualization purpose)
+
 (3) Customize the diffusion output in the file diffuser/guides/policies.py  (__call__ function)
+
 (4) Customize the diffusion saving/print in the files scripts/plan_maze2d.py (especially after line 55) and config/maze2d.py
 
 # Use pre-trained models
