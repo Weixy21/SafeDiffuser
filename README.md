@@ -47,13 +47,13 @@ Choose any one option betwee lines 405 and 439 of the file denoising_diffusion_p
 
 
 # Use pre-trained models
-## Downloading weights
+## 1. Downloading weights
 Download pretrained diffusion models and value functions (from diffuser) with:
 ```
 ./scripts/download_pretrained.sh
 ```
 
-# Planning using pre-trained models
+## 2. Planning using pre-trained models
 To plan with guided sampling, run:
 
 Maze2d:
@@ -77,7 +77,7 @@ python scripts/unconditional_kuka_planning_eval.py
 The --logbase points the experiment loader to the folder containing the pretrained/self-trained models.
 
 # Training from scratch
-1. Train a diffusion model with:
+## 1. Train a diffusion model with:
 
 Maze2d:
 
@@ -99,13 +99,13 @@ python scripts/kuka.py
 
 The default hyperparameters are listed in maze2d/locomotion:diffusion. You can override any of them with flags, eg, --n_diffusion_steps 100.
 
-2. Train a value function with:
+## 2. Train a value function with:
 ```
 python scripts/train_values.py --dataset walker2d-medium-expert-v2
 ```
 See locomotion:values for the corresponding default hyperparameters.
 
-3. Plan using your newly-trained models with the same command as in the pretrained planning section, simply replacing the logbase to point to your new models:
+## 3. Plan using your newly-trained models with the same command as in the pretrained planning section, simply replacing the logbase to point to your new models:
 
 Maze2d:
 
