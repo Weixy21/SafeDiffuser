@@ -175,27 +175,27 @@ class GaussianDiffusion(nn.Module):
             x, values = sample_fn(self, x, cond, t, **sample_kwargs)
 
             ##########################################walker2d
-            # x, b_min = self.GD(x_t, x)  # 13, 23
-            # x, b_min = self.Shield(x_t, x)  # 11
-            # x, b_min = self.invariance(x_t, x)  # 12
-            # x, b_min = self.invariance_cf(x_t, x)   #closed form
-            # x, b_min = self.invariance_cpx(x_t, x)  # 22:
-            # x, b_min = self.invariance_cpx_cf(x_t, x) #closed form
+            # x, b_min = self.GD(x_t, x)  # truncate method
+            # x, b_min = self.Shield(x_t, x)  # classifier guidance or potential-based method
+            # x, b_min = self.invariance(x_t, x)  # RoS diffuser
+            x, b_min = self.invariance_cf(x_t, x)   #RoS diffuser, closed form
+            # x, b_min = self.invariance_cpx(x_t, x)  #RoS diffuser with complex safety specification
+            # x, b_min = self.invariance_cpx_cf(x_t, x) #RoS diffuser with complex safety specification, closed form
 
             ##########################################hopper
-            # x, b_min = self.GD_hopper(x_t, x) # 13, 23
-            # x, b_min = self.Shield_hopper(x_t, x)  # 11
-            # x, b_min = self.invariance_hopper(x_t, x)  # 12
-            # x, b_min = self.invariance_hopper_cf(x_t, x)   #closed form
-            # x, b_min = self.invariance_hopper_cpx(x_t, x)  # 22
-            x, b_min = self.invariance_hopper_cpx_cf(x_t, x)  #closed form
+            # x, b_min = self.GD_hopper(x_t, x) # truncate method
+            # x, b_min = self.Shield_hopper(x_t, x)  # #classifier guidance or potential-based method
+            # x, b_min = self.invariance_hopper(x_t, x)  # RoS diffuser
+            # x, b_min = self.invariance_hopper_cf(x_t, x)   #RoS diffuser, closed form
+            # x, b_min = self.invariance_hopper_cpx(x_t, x)  #RoS diffuser with complex specification
+            # x, b_min = self.invariance_hopper_cpx_cf(x_t, x)  #RoS diffuser with complex specification, closed form
 
             ##########################################cheetah
             # x, b_min = self.invariance_cheetah(x_t, x)
             
             x = apply_conditioning(x, cond, self.action_dim)
 
-            ############################ diffuser only
+            ############################ diffuser only, for evaluation purpose
             # height = 1.4   #1.3    walker2d
             # height = (height - self.mean[0]) / self.std[0]
             # b = height - x[:,6:7]  - 0.1*x[:,15:16]
@@ -231,7 +231,7 @@ class GaussianDiffusion(nn.Module):
 
 ###################################################################walker2d  
     @torch.no_grad()   #only for sampling
-    def invariance(self, x, xp1):
+    def invariance(self, x, xp1):    # RoS diffuser
 
         x = x.squeeze(0)
         xp1 = xp1.squeeze(0)
@@ -271,7 +271,7 @@ class GaussianDiffusion(nn.Module):
         return rt, torch.min(b)  # + 0.01  # for robustness
     
     @torch.no_grad()   #only for sampling
-    def invariance_cf(self, x, xp1):
+    def invariance_cf(self, x, xp1):  # RoS diffuser closed-form
 
         x = x.squeeze(0)
         xp1 = xp1.squeeze(0)
@@ -326,7 +326,7 @@ class GaussianDiffusion(nn.Module):
     
     
     @torch.no_grad()   #only for sampling
-    def invariance_cpx(self, x, xp1):
+    def invariance_cpx(self, x, xp1):   # RoS diffuser with complex safety specification
 
         x = x.squeeze(0)
         xp1 = xp1.squeeze(0)
@@ -365,7 +365,7 @@ class GaussianDiffusion(nn.Module):
         return rt, torch.min(b)  # + 0.01  # for robustness
     
     @torch.no_grad()   #only for sampling
-    def invariance_cpx_cf(self, x, xp1):
+    def invariance_cpx_cf(self, x, xp1): # RoS diffuser with complex safety specification, closed-form
 
         x = x.squeeze(0)
         xp1 = xp1.squeeze(0)
@@ -421,7 +421,7 @@ class GaussianDiffusion(nn.Module):
 
 ###################################################################hopper  
     @torch.no_grad()   #only for sampling
-    def invariance_hopper(self, x, xp1):
+    def invariance_hopper(self, x, xp1):   # RoS diffuser (hopper)
 
         x = x.squeeze(0)
         xp1 = xp1.squeeze(0)
@@ -460,7 +460,7 @@ class GaussianDiffusion(nn.Module):
         return rt, torch.min(b)  # + 0.01  # for robustness
     
     @torch.no_grad()   #only for sampling
-    def invariance_hopper_cf(self, x, xp1):
+    def invariance_hopper_cf(self, x, xp1):  # RoS diffuser closed form (hopper)
 
         x = x.squeeze(0)
         xp1 = xp1.squeeze(0)
@@ -515,7 +515,7 @@ class GaussianDiffusion(nn.Module):
         return rt, torch.min(b)  # + 0.01  # for robustness
     
     @torch.no_grad()   #only for sampling
-    def invariance_hopper_cpx(self, x, xp1):
+    def invariance_hopper_cpx(self, x, xp1):  # RoS diffuser with complex safety specification (hopper)
 
         x = x.squeeze(0)
         xp1 = xp1.squeeze(0)
@@ -554,7 +554,7 @@ class GaussianDiffusion(nn.Module):
         return rt, torch.min(b)  # + 0.01  # for robustness
     
     @torch.no_grad()   #only for sampling
-    def invariance_hopper_cpx_cf(self, x, xp1):
+    def invariance_hopper_cpx_cf(self, x, xp1):   # RoS diffuser with complex safety specification, closed-form (hopper)
 
         x = x.squeeze(0)
         xp1 = xp1.squeeze(0)
@@ -694,7 +694,7 @@ class GaussianDiffusion(nn.Module):
 
 ####################################################################shield    
     @torch.no_grad()   #Walker2d
-    def Shield(self, x0, xp10):
+    def Shield(self, x0, xp10):  # Truncate method (Walker2d)
 
         x = x0.clone()
         xp1 = xp10.clone()
@@ -720,7 +720,7 @@ class GaussianDiffusion(nn.Module):
         return xp1, torch.min(b[:,0])
     
     @torch.no_grad()   #Hopper
-    def Shield_hopper(self, x0, xp10):
+    def Shield_hopper(self, x0, xp10): # Truncate method (hopper)
 
         x = x0.clone()
         xp1 = xp10.clone()
@@ -747,7 +747,7 @@ class GaussianDiffusion(nn.Module):
 
 ###################################################################GD     
     @torch.no_grad()   #walker2d
-    def GD(self, x0, xp10):
+    def GD(self, x0, xp10):  #classifier guidance or potential-based method (walker2d)
 
         x = x0.clone()
         xp1 = xp10.clone()
@@ -779,7 +779,7 @@ class GaussianDiffusion(nn.Module):
         return xp1, torch.min(b[:,0])
     
     @torch.no_grad()   #Hopper
-    def GD_hopper(self, x0, xp10):
+    def GD_hopper(self, x0, xp10):  #classifier guidance or potential-based method (hopper)
 
         x = x0.clone()
         xp1 = xp10.clone()
