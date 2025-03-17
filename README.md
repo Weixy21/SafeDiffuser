@@ -48,7 +48,7 @@ Choose any one option betwee lines 405 and 439 of the file denoising_diffusion_p
 
 # Use pre-trained models
 ## 1. Downloading weights
-Download pretrained diffusion models and value functions (from diffuser) with:
+Download pretrained diffusion models and value functions (from diffuser in the locomotion branch) with:
 ```
 ./scripts/download_pretrained.sh
 ```
