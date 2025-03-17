@@ -59,7 +59,7 @@ To plan with guided sampling, run:
 Maze2d:
 
 ```
-python scripts/plan_maze2d.py --config config.maze2d --dataset maze2d-large-v1 logs/pretrained
+python scripts/plan_maze2d.py --config config.maze2d --dataset maze2d-large-v1 --logbase logs/pretrained
 ```
 
 Locomotion:
